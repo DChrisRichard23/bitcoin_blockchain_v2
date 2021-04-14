@@ -43,4 +43,11 @@ explore: transactions {
     sql_on: ${transactions.block_number} = ${blocks.number}  ;;
   }
 
+  join: date_table {
+    view_label: "Transactions Date"
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${transactions.block_timestamp_date} = ${date_table.date_date}  ;;
+  }
+
 }

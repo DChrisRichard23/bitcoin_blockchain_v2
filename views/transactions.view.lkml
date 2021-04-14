@@ -12,6 +12,16 @@ view: transactions {
     sql: ${TABLE}.block_number ;;
   }
 
+  measure: blocks {
+    type: count_distinct
+    sql: ${block_number} ;;
+  }
+
+  dimension: block_timestamp_hour {
+    type: number
+    sql: ${TABLE}.block_timestamp_hour ;;
+  }
+
   dimension_group: block_timestamp {
     type: time
     timeframes: [
@@ -24,6 +34,16 @@ view: transactions {
       year
     ]
     sql: ${TABLE}.block_timestamp ;;
+  }
+
+  measure: min_block_timestamp {
+    type: date_time
+    sql: MIN(${block_timestamp_raw}) ;;
+  }
+
+  measure: max_block_timestamp {
+    type: date_time
+    sql: MAX(${block_timestamp_raw}) ;;
   }
 
   dimension_group: block_timestamp_month {
@@ -44,6 +64,12 @@ view: transactions {
   dimension: fee {
     type: number
     sql: ${TABLE}.fee ;;
+  }
+
+  measure: total_fee {
+    type: sum
+    sql: ${fee} ;;
+    value_format: "#,###"
   }
 
   dimension: hash {
@@ -109,6 +135,21 @@ view: transactions {
   measure: count {
     type: count
     drill_fields: []
+  }
+
+  measure: transactions {
+    type: count
+  }
+
+  measure: days {
+    type: count_distinct
+    sql: ${block_timestamp_date} ;;
+  }
+
+  measure: transactions_per_day{
+    type: number
+    sql: ${transactions}/${days} ;;
+    value_format: "#,###"
   }
 }
 
