@@ -75,6 +75,7 @@ view: transactions {
   dimension: hash {
     type: string
     sql: ${TABLE}.`hash` ;;
+    primary_key: yes
   }
 
   dimension: input_count {
